@@ -5,10 +5,12 @@ import csv
 import threading
 import os
 import sys
+from queue import Queue  
 
 # ---------------- 全局参数 ----------------
 stop_flag = False  # 控制线程停止
 duration = 12      # 采集时长（秒），可调整
+frame_queue = Queue(maxsize=0)  # 主线程和摄像头线程共享的帧队列
 
 # 允许的地面类别
 ALLOWED_GROUNDS = ['GRAS', 'ICE', 'TILE', 'GLAS', 'TRACK', 'ASPH', 'MUD', 'SAND', 'GRVL']
@@ -143,9 +145,17 @@ def camera_thread(video_file="video.avi", ts_file="frame_timestamps.csv"):
             ts = time.time()
             out.write(frame)
 
+
             writer.writerow([frame_index, ts])
             frame_index += 1
             f.flush()
+
+            if frame_queue.full():
+                try:
+                    frame_queue.get_nowait()
+                except:
+                    pass
+            frame_queue.put(frame)
 
     cap.release()
     out.release()
@@ -181,8 +191,15 @@ if __name__ == '__main__':
     t2.start()
 
     # 自动停止
-    while time.time() - start_time < duration:
-        time.sleep(0.1)
+    while time.time() - start_time < duration and not stop_flag:
+        if not frame_queue.empty():
+            frame = frame_queue.get()
+            cv2.imshow('Data Collection - Press ESC to stop', frame)
+        # 监听键盘按键
+        if cv2.waitKey(1) & 0xFF == 27:  # ESC键退出
+            stop_flag = True
+            break
+        time.sleep(0.01)
     stop_flag = True
 
     t1.join()
