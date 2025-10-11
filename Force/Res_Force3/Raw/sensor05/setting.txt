@@ -1,0 +1,22 @@
+------------------ start ------------------
+Resnet_depth : 50
+DEVICE : cuda
+LABEL_FLIST : D:/Users/Admin/Desktop/postgraduate/project/Force/label_hardness1.txt
+LR : 0.0001
+NUM_WORKS : 12
+EPOCH : 2000
+BATCH_SIZE : 32
+AugTrain : True
+AugTest : False
+AugVal : True
+LOAD_MODEL : False
+mode : train
+sensor : sensor05
+flist : 
+DATA_PATH : session/
+save_path : Res_Force3/Raw/sensor05/
+load_path : Res_Force3/Raw/sensor05/
+Stiffness_TRAIN_FLIST : session/sensor05/train_with_force.flist
+Stiffness_VAL_FLIST : session/sensor05/val_with_force.flist
+Stiffness_TEST_FLIST : session/sensor05/test_with_force.flist
+------------------- end -------------------
