@@ -7,15 +7,15 @@
 最终通过蓝牙和震动实现对用户反馈
 
 ## collect_IMU+VBTS
-文件中collect.py为数据收集代码，Separate.py是视频分帧成图片代码
+文件中collect.py为数据收集代码，Separate.py是视频分帧成图片代码，可以将每个视频分帧后图片保存到对应文件夹下的frames文件中。
 
 ## Force
-Force文件是切向力和法向力预测代码，可以使用main_force3.py进行训练和预测。  
+Force文件是切向力和法向力预测代码，可以使用main_force3.py进行训练和预测,代码会输出一个训练好的权重文件checkpoints.pt，需将checkpoints.pt文件复制到session1\sensor05文件夹中进行力预测。  
 
 
-修改了预测力的代码，使用test.py可以直接对新采集的数据图片进行预测，以GLAS_010文件中数据为例，步骤如下：
+修改了力预测的测试代码，使用test.py可以直接对新采集的数据图片进行预测，以GLAS_010文件中数据为例，步骤如下：
 1.上传要预测力的图片数据到session_GLAS_010文件夹中的frame文件夹。
-2.在test.py文件中，将代码修改正确，然后运行即可
+2.在test.py文件中，将代码修改正确，然后运行即可。
 
 ```python
 session_name = 'session_GLAS_010'
